@@ -1,5 +1,14 @@
 #!/usr/bin/env node
 
+/**
+ * https://instagram.com/oauth/authorize/?client_id=953d8c6c266a4c0b98c5d6f06f3898b2&redirect_uri=http://localhost:8000&response_type=code
+ * https://instagram.com/oauth/authorize/?client_id=953d8c6c266a4c0b98c5d6f06f3898b2&redirect_uri=http://localhost:8000&response_type=token
+ *
+ https://instagram.com/oauth/authorize/?client_id=953d8c6c266a4c0b98c5d6f06f3898b2&redirect_uri=http://localhost:8000/app/index.html&response_type=token
+
+ * https://api.instagram.com/v1/locations/search?distance=1000&lat=48.858844&lng=2.294351&access_token=518542114.f59def8.94b0572e8b0544509481c30f939e084b
+ */
+
 var util = require('util'),
     http = require('http'),
     fs = require('fs'),
