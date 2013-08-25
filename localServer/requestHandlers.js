@@ -8,6 +8,10 @@ var sys = require("sys");
 var api = require('instagram-node').instagram();
 var redirect_uri = 'http://localhost:8000/app/index.html';
 
+
+// 518542114.953d8c6.4ec95fcf3a2e429486100cacaa8f8e56
+
+
 /**
  * Redirects browser to the Instagram login page
  */
@@ -42,23 +46,14 @@ exports.instagramAuth = function(req, res) {
 	api.authorize_user(code, redirect_uri, function(err, result) {
 		if (err) {
 			console.log(err);
-		}
-/*
-		if (err) {
-			//console.log(err);
-			//console.log(err.body);
-			res.writeHead(500, {
-    			'Content-Type': 'text/html'
-  			});
-
-			res.write("something went wrong" + err.body);
+			res.writeHead(500, {"Content-Type": "text/plain"});
+			res.write("There was an error Authenticating to the Instagram Server: " + err );
 			res.end();
-		} else {
-
-			*/
+		}else{
 			res.write(JSON.stringify(result));
 			res.end();
-		//}
+		}
+
 	});
 };
 
@@ -66,21 +61,14 @@ exports.instagramAuth = function(req, res) {
 function instagramCall(req, res){
 
 	var ig = require('instagram-node').instagram();
-//	var access_token;
 	
 	var query = url.parse(req.url).query;
 	console.log("THIS IS THE QUERY STRING OBJ "+JSON.stringify(query));
 	var access_token = query['access_token'];
 
 	console.log("THIS IS THE ACCESS TOKEN "+access_token);
-
 	ig.use({ access_token: access_token });
 
-	//var options = { distance: 5000 };
-
-//  Location(48.858844, 2.294351, 1000);
-
-// , distance: 5000
 
 
 /*
