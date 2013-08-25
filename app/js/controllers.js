@@ -74,7 +74,11 @@ angular.module('myApp.controllers', []);
 
   }]);
 
-	  angular.module('myApp.controllers').controller('imageDisplayView',['$scope',function($scope){
+
+/**
+ *
+ */
+angular.module('myApp.controllers').controller('imageDisplayView',['$scope',function($scope){
 
 	//  	$scope.$on
 

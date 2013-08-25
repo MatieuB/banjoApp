@@ -12,6 +12,8 @@ var redirect_uri = 'http://localhost:8000/app/index.html';
 // 518542114.953d8c6.4ec95fcf3a2e429486100cacaa8f8e56
 
 
+
+
 /**
  * Redirects browser to the Instagram login page
  */
