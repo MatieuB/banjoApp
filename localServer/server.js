@@ -25,6 +25,17 @@ var util = require('util'),
 
     var router = require('./applicationRouter.js');
 
+function addRedirectOverride(){
+  var redirect = require('response-redirect');
+  http.ServerResponse.prototype.__defineGetter__('req', function(){
+  return this.socket.parser.incoming;
+  });
+  http.ServerResponse.prototype.redirect = redirect;
+}
+
+addRedirectOverride();
+
+
 var DEFAULT_PORT = 8000;
 
 function main(argv) {

@@ -49,10 +49,12 @@ curl https://api.instagram.com/v1/locations/search?access_token=518542114.953d8c
 				lng:this.lng,
 				dst:this.dst
 			}
-
 */
 
-		$http.get('/instagram/locations/search?lat='+this.lat+'&lng='+this.lng+'&dst='+this.dist+'&access_token='+factory.accessToken).success(function(data){
+//instagram
+// /locations/search?lat='+this.lat+'&lng='+this.lng+'&dst='+this.dist+'&access_token='+factory.accessToken
+
+		$http.get('/instagram?access_token=' + factory.accessToken).success(function(data){
 				successCallback(data);
 			});
 	}
@@ -72,9 +74,15 @@ curl https://api.instagram.com/v1/locations/search?access_token=518542114.953d8c
 
 //    /instagramAuth
 
-	factory.getOAuth=function(code, successCallback){
+	factory.getOAuth=function(queryString, successCallback){
+		// var params = {code:code};
+    	//var str = ;
+	//	var queryString = $.param(params);
 
-		$http.get('/instagramAuth?code='+code).success(function(data){
+		$http.get('/instagramAuth'+queryString).success(function(data){
+
+			factory.accessToken = data.access_token;
+
 			successCallback(data);
 		}).error(function(){
 

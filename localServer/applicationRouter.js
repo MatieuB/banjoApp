@@ -3,6 +3,8 @@ var requestHandlers = require("./requestHandlers");
 
 var exactMatches = {};
 exactMatches["/instagramAuth"] = requestHandlers.instagramAuth;
+exactMatches["/instagramLogin"] = requestHandlers.instagramLogin;
+
 
 var subpaths = {};
 subpaths["/instagram"] = requestHandlers.instagramCall;
@@ -14,8 +16,8 @@ function route(req, res, defaultHandler){
 	var pathname = url.parse(req.url).pathname;
 	console.log("About to route a request for " + pathname);
 	if(typeof exactMatches[pathname] == 'function'){
-		
-		
+
+
 		exactMatches[pathname](req, res);
 	}else{
 		var matches = false;
