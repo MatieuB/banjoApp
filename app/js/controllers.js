@@ -73,24 +73,12 @@ angular.module('myApp.controllers', []);
 	 	  if(code!=undefined){
 	 	  	instagramAccess.getOAuth(code, userAuthenticatedCallback);
 	 	  }else{
-		
-
-		/*
-
-		Check if the user decided to cancel the Auth flow for some reason
-
-		http://your-redirect-uri?error=access_denied&error_reason=user_denied&error_description=The+user+denied+your+request
-
-
-
-
-		*/
 
 	 	  	// This case shouldn't happen
 	 	  	// do some stuff here --> send user to the 'login' page
 	 	  	// because we can't go through the auth process without a "code" from instagram
 	 	  	var search = $location.search(); 
-	 	  	var redirectUrl = "/instagramLogin" + "?" + $.param(search) + $location.hash();
+	 	  	var redirectUrl = "/instagramLogin" ;//+ "?" + $.param(search) + $location.hash();
 	 	  	window.location = redirectUrl;
 	 	  }
 	}
