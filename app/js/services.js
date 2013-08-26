@@ -83,6 +83,17 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 			});
 	}
 
+	factory.getUserLoggedIn=function(successCallback, failureCallback){
+		$http.get('/instagramUserLoggedIn?access_token=' + sessionStorage.access_token )
+			.success(function(data){
+				successCallback(data);
+			}).error(function(data, status, headers, config){
+				console.log(JSON.stringify(data));
+				alert("there was an error");
+				failureCallback();
+			});
+	}
+
 	return factory;
 
 }

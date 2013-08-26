@@ -28,7 +28,7 @@ angular.module('myApp.controllers', []);
  	}
 
  	var userAuthenticatedCallback = function(data){
-		console.log("Finished Grabbing the User Data");
+		//console.log("Finished Grabbing the User Data");
 		var access_token = data.access_token;
 		// set the user =)
 		//sessionStorage.access_token = access_token;
@@ -73,6 +73,19 @@ angular.module('myApp.controllers', []);
 	 	  if(code!=undefined){
 	 	  	instagramAccess.getOAuth(code, userAuthenticatedCallback);
 	 	  }else{
+		
+
+		/*
+
+		Check if the user decided to cancel the Auth flow for some reason
+
+		http://your-redirect-uri?error=access_denied&error_reason=user_denied&error_description=The+user+denied+your+request
+
+
+
+
+		*/
+
 	 	  	// This case shouldn't happen
 	 	  	// do some stuff here --> send user to the 'login' page
 	 	  	// because we can't go through the auth process without a "code" from instagram
@@ -86,13 +99,29 @@ angular.module('myApp.controllers', []);
 		loginToInstagram();
 	}else{
 
-		// make sure that there are no query string params
-		if(window.location.search.length > 0){
-			window.location.search="";
-		}
+		//	window.location.search="";
+		//	broadcastUserAuthenticated();
 
 		instagramApi.getUserInfo(getUserInformationCallback);
-		broadcastUserAuthenticated();
+		// broadcastUserAuthenticated();
+
+		// make a call to see if the user is actually logged in
+		instagramApi.getUserLoggedIn(function(){
+			// success
+			// make sure that there are no weird query string params
+			if(window.location.search.length > 0){
+				window.location.search="";
+			}else{
+				broadcastUserAuthenticated();
+			}
+
+		},function(){
+			//failure
+			loginToInstagram();
+		}
+
+		);
+		
 	}
 
   }]);

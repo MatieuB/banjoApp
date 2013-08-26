@@ -37,6 +37,35 @@ exports.instagramUserInfo= function(req, res){
 
 }
 
+exports.instagramUserLoggedIn= function(req, res){
+
+	var ig = require('instagram-node').instagram();
+
+	var query = url.parse(req.url).query;
+	var access_token = query['access_token'];
+	//var user_id = query['user_id'];
+
+	ig.use({ access_token: access_token });
+
+	ig.user_self_feed({count:1}, function(err, medias, pagination, limit) {
+		if (err) {
+			console.log(err);
+			res.writeHead(500, {"Content-Type": "text/plain"});
+			res.write("There was an error grabbing the logged in user info from the Instagram Server: " + err );
+			res.end();
+		}else{
+			res.write(JSON.stringify(true));
+			res.end();
+		}
+
+	});
+
+}
+
+/* OPTIONS: { [count], [min_id], [max_id] }; */
+
+
+
 
 /**
  * Redirects browser to the Instagram login page
@@ -98,13 +127,11 @@ exports.locationSearch=function(req, res){
 
 	console.log("THIS IS THE QUERY STRING OBJ "+JSON.stringify(query));
 
-	ig.use({ access_token:access_token });
-	
+	ig.use({access_token:access_token});
 	ig.use({
 	  client_id: '953d8c6c266a4c0b98c5d6f06f3898b2',
 	  client_secret: '74097c62af4249ee89ca825d6629d92f'
 	});
-
 
 
 	var latNum =  parseFloat(lat);
