@@ -167,9 +167,9 @@ angular.module('myApp.controllers').controller('locationRadiusController',['$sco
 	//  	$scope.$on
 
   	//alert("imageDisplayView")
-	console.log("image display view");
+	//console.log("image display view");
   	// there is some sort of image display view
-
+  	$scope.allSitePosts = new Array();
 
   	$scope.loadedSites = new Array();
   	$scope.loadingSiteIds = new Array();
@@ -214,6 +214,10 @@ angular.module('myApp.controllers').controller('locationRadiusController',['$sco
   			var addedData = {id:id, posts:posts, data:siteData};
 			$scope.loadedSites.push(addedData);
 
+			for(var sitePost in posts){
+				$scope.allSitePosts.push(posts[sitePost]);
+			}
+
 			function fetchMoreData(){
 				if($scope.loadingSiteIds.length == $scope.loadedSites.length){
 					var docHeight = $(document).height();
@@ -235,7 +239,7 @@ angular.module('myApp.controllers').controller('locationRadiusController',['$sco
   		$scope.loadingSiteIds.push(id);
   		var successCallback = getSiteSuccessCallback(id);
   		instagramApi.getMediaBySite(id, successCallback);
-  		console.log("fetching more posting data");
+  		//console.log("fetching more posting data");
   	}
 	
 
