@@ -23,9 +23,11 @@
 			<h1>{{site.data.name}}</h1>
 			<pre>{{site.data}} Has this many posts: {{site.posts.length}}</pre>
 
-			<div ng-repeat="post in site.posts">
+			<div>
+			
+			<div ng-repeat="post in site.posts" style="display:inline-block">
 				<img ng-src="{{post.images.low_resolution.url}}"></img>
-				
+			</div>
 
 			</div>
 		<!--	{{site.posts}} -->

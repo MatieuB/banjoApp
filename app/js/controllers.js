@@ -156,35 +156,6 @@ angular.module('myApp.controllers').controller('locationSiteController',['$scope
 
 	$scope.init = function(site){
   		 $scope.site = site;
-/*
-  		for(var index in $scope.sites){
-  			var site = $scope.sites[index];
-  			if(site.id == siteId){
-
-  			}
-  		}
-
-  		*/
-  	//	$scope.site = 
-  		// $scope.siteName = 
-  		// site[0].images
-  	}
-
-
-  	$scope.initPosts = function(posts){
-  		$scope.posts = posts;
-/*
-  		for(var index in $scope.sites){
-  			var site = $scope.sites[index];
-  			if(site.id == siteId){
-
-  			}
-  		}
-
-  		*/
-  	//	$scope.site = 
-  		// $scope.siteName = 
-  		// site[0].images
   	}
 
  }]);
@@ -203,22 +174,28 @@ angular.module('myApp.controllers').controller('locationRadiusController',['$sco
   	$scope.loadedSites = new Array();
   	$scope.loadingSiteIds = new Array();
 
-  	function dataLoadedComplete(){
-		$scope.fetchSites();
-		$(window).scroll(function() {
+
+  	$scope.windowScrollCallback = (function(scope){
+  		return function() {
   			var documentHeight = $(document).height();
   			var windowPosition = $(window).height() + window.scrollY;
   			if(windowPosition > (documentHeight - 20)){
-  				$scope.fetchSites();
+  				scope.fetchSites();
+  				scope.$apply();
   			}
-		});
+		}
+	})($scope);
+
+  	function dataLoadedComplete(){
+		$scope.fetchSites();
+		$(window).scroll($scope.windowScrollCallback);
   	}
 
   	$scope.fetchSites= function(){
   		if($scope.loadingSiteIds.length == $scope.loadedSites.length){
   			if($scope.sites.length > $scope.loadingSiteIds.length){
   				var nextSiteId = $scope.sites[$scope.loadingSiteIds.length].id;
-  				fetchSiteById(nextSiteId);
+  				$scope.fetchSiteById(nextSiteId);
   			}
   		}
   	}
@@ -245,6 +222,7 @@ angular.module('myApp.controllers').controller('locationRadiusController',['$sco
 					// document height, then we should load more data
 					if(docHeight < windowHeight + 20){
 						$scope.fetchSites();
+						$scope.$apply();
 					}	
 				}
 			}
@@ -252,11 +230,12 @@ angular.module('myApp.controllers').controller('locationRadiusController',['$sco
   		}
   	}
 
-  	function fetchSiteById(id){
+  	$scope.fetchSiteById=function(id){
   		$scope.dataIsLoading = true;
   		$scope.loadingSiteIds.push(id);
   		var successCallback = getSiteSuccessCallback(id);
   		instagramApi.getMediaBySite(id, successCallback);
+  		console.log("fetching more posting data");
   	}
 	
 
