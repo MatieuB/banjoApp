@@ -91,8 +91,8 @@ angular.module('myApp.controllers', []);
 		//	broadcastUserAuthenticated();
 
 		instagramApi.getUserInfo(getUserInformationCallback);
-		// broadcastUserAuthenticated();
 		broadcastUserAuthenticated();
+	//	broadcastUserAuthenticated();
 
 
 		/*
