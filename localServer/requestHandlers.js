@@ -122,6 +122,23 @@ exports.getMediaByLocationID = function(req, res){
 		ig.location_media_recent('location_id', [options,] function(err, result, pagination, limit) {});
 	*/
 
+	var ig = require('instagram-node').instagram();
+	var query = url.parse(req.url).query;
+	var access_token = query['access_token'];
+
+	var id = query['id'];
+
+
+	// console.log("THIS IS THE QUERY STRING OBJ "+JSON.stringify(query));
+
+	ig.use({
+	  client_id: '953d8c6c266a4c0b98c5d6f06f3898b2',
+	  client_secret: '74097c62af4249ee89ca825d6629d92f',
+	  access_token:access_token
+	});
+
+
+
 
 
 }

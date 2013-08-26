@@ -173,10 +173,64 @@ angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'in
 	console.log("image display view");
   	// there is some sort of image display view
 
-  	function dataLoadedComplete(){
 
+  	$scope.loadedSites = new Array();
+  	$scope.loadingSiteIds = new Array();
+
+  	function dataLoadedComplete(){
+/*
+  		for(var index in $scope.sites){
+  			var site = $scope.sites[index];
+  			var siteId =  site.id;
+  			// do a search for the site
+
+  			// window.scrollY
+  			// $(window).height()
+
+  		}
+*/
+
+		$(window).scroll(function() {
+  //$('#log').append('<div>Handler for .scroll() called.</div>');
+
+  			var documentHeight = $(document).height();
+  			var windowPosition = $(window).height() + window.scrollY;
+
+  			if(windowPosition > (documentHeight - 20)){
+  				// console.log(' scrolled within 20 px of the bottom ');
+  				$scope.fetchSites();
+  			}
+		});
 
   	}
+
+
+  	$scope.fetchSites= function(){
+  		if($scope.loadingSiteIds.length == $scope.loadedSites.length){
+  			if($scope.sites.length > $scope.loadingSiteIds.length){
+  				var nextSiteId = $scope.sites[$scope.loadingSiteIds.length].id;
+  				$scope.loadingSiteIds.push(nextSiteId);
+  				fetchSiteById(nextSiteId);
+  			}
+  		}else{
+  			// this means that we are still waiting for data to come back
+  			// dont' do anything here
+  		}
+  	}
+
+  	function getSiteSuccessCallback(id){
+  		return function(data){
+  			// id
+			$scope.loadedSites.push(data);
+			$scope.$apply();
+  		}
+  	}
+
+  	function fetchSiteById(id){
+  		var successCallback = getSiteSuccessCallback(id);
+  		instagramApi.getMediaBySite(id, successCallback);
+  	}
+	
 
   	$scope.init = function(location){
   		// $scope.locationObject = instagramApi.getDefaultLocationObject();
@@ -189,11 +243,8 @@ angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'in
   		});
   	}
 
- 
-
-
-
-
-
 
   }]);
+
+
+
