@@ -19,7 +19,8 @@ angular.module('myApp.services').factory('instagramAccess', ['$http',function($h
 				factory.user = data;
 				factory.accessToken = data.access_token;
 				successCallback(data);
-			}).error(function(){
+			}).error(function(data, status, headers, config){
+				console.log(JSON.stringify(data));
 				alert("there was an error");
 			});
 		}
@@ -61,8 +62,8 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 		var queryString = this.getQueryString();
 		$http.get('/locationSearch' + queryString).success(function(data){
 			successCallback(data);
-		}).error(function(){
-			
+		}).error(function(data, status, headers, config){
+			console.log(JSON.stringify(data));
 		});
 	}
 
@@ -76,7 +77,8 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 		$http.get('/instagramUserInfo?access_token=' + sessionStorage.access_token + '&user_id=' + sessionStorage.userId )
 			.success(function(data){
 				successCallback(data);
-			}).error(function(){
+			}).error(function(data, status, headers, config){
+				console.log(JSON.stringify(data));
 				alert("there was an error");
 			});
 	}

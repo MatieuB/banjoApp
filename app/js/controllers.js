@@ -39,10 +39,6 @@ angular.module('myApp.controllers', []);
 		// flow set by Instagram make sure that
 		// any sort of odd search params are cleared. 
 		window.location.search = "";
-
-	//	broadcastUserAuthenticated();
-	//	$scope.user = data.user;
-	//	instagramApi.getUserInfo(getUserInformationCallback);
 	}
 
 	/**
@@ -89,6 +85,12 @@ angular.module('myApp.controllers', []);
 	if(sessionStorage.access_token == undefined || sessionStorage.userId == undefined){
 		loginToInstagram();
 	}else{
+
+		// make sure that there are no query string params
+		if(window.location.search.length > 0){
+			window.location.search="";
+		}
+
 		instagramApi.getUserInfo(getUserInformationCallback);
 		broadcastUserAuthenticated();
 	}

@@ -98,40 +98,50 @@ exports.locationSearch=function(req, res){
 
 	console.log("THIS IS THE QUERY STRING OBJ "+JSON.stringify(query));
 
-	ig.use({ access_token: access_token });
-/*
-	ig.location_search({ lat: lat, lng: lng },  function(err, result, limit) {
+	ig.use({ access_token:access_token });
+	
+	ig.use({
+	  client_id: '953d8c6c266a4c0b98c5d6f06f3898b2',
+	  client_secret: '74097c62af4249ee89ca825d6629d92f'
+	});
+
+
+
+	var latNum =  parseFloat(lat);
+	var lngNum = parseFloat(lng);
+
+	ig.location_search({ lat: latNum, lng: lngNum },  function(err, result, limit) {
 		if (err) {
 
 			console.log(result);
-
 			console.log(err);
 			res.writeHead(500, {"Content-Type": "text/plain"});
-			res.write("There was an error Authenticating to the Instagram Server: " + err );
+			res.write("There was an error accessing the Instagram Server: " + err );
 			res.end();
 		}else{
 			res.write(JSON.stringify(result));
 			res.end();
 		}
 	});
-*/
+
 
  // 48.858844, 2.294351
 
-var latInt =  parseFloat(lat);
-var lngInt = parseFloat(lng);
-console.log(latInt);
-console.log(lngInt);
+//var latInt =  parseFloat(lat);
+//var lngInt = parseFloat(lng);
+//console.log(latInt);
+//console.log(lngInt);
 
-ig.location_search({ lat: latInt, lng: lngInt }, function(err, result, limit) {
+/* , {distance: 1000} */
+/*
+ig.location_search({lat:latInt,lng:lngInt}, function(err, result, limit) {
 
 		if (err) {
-
 			console.log(result);
 
 			console.log(err);
 			res.writeHead(500, {"Content-Type": "text/plain"});
-			res.write("There was an error Authenticating to the Instagram Server: " + err );
+			res.write("There was an error accessing the Instagram Server: " + err );
 			res.end();
 		}else{
 			res.write(JSON.stringify(result));
@@ -139,7 +149,7 @@ ig.location_search({ lat: latInt, lng: lngInt }, function(err, result, limit) {
 		}
 
 });
-
+*/
 };
 
 
