@@ -116,6 +116,16 @@ exports.instagramAuth = function(req, res) {
 	});
 };
 
+exports.getMediaByLocationID = function(req, res){
+
+	/*
+		ig.location_media_recent('location_id', [options,] function(err, result, pagination, limit) {});
+	*/
+
+
+	
+}
+
 exports.locationSearch=function(req, res){
 	var ig = require('instagram-node').instagram();
 	var query = url.parse(req.url).query;

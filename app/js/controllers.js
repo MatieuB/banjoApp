@@ -132,6 +132,22 @@ angular.module('myApp.controllers').controller('userDisplayController',['$scope'
 
   }]);
 
+//
+
+angular.module('myApp.controllers').controller('locationController',['$scope', 'instagramApi', function($scope, instagramApi){
+
+	//  	$scope.$on
+
+  	//alert("imageDisplayView")
+	console.log("locationController");
+  	// there is some sort of image display view
+  	function init(location){
+  		$scope.location = location;
+  	}
+
+
+  }]);
+
 /**
  *
  */

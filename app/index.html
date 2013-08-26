@@ -29,7 +29,14 @@ Hello: {{userData.full_name}}
 <img ng-src="{{userData.profile_picture}}"/>
 
 
-{{locations}}
+<!--{{locations}}-->
+
+
+<div ng-repeat="location in locations" ng-controller="locationController">
+
+{{location}}
+
+</div>
 
 
 </div>
