@@ -61,6 +61,8 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 		var queryString = this.getQueryString();
 		$http.get('/locationSearch' + queryString).success(function(data){
 			successCallback(data);
+		}).error(function(){
+			
 		});
 	}
 

@@ -34,9 +34,15 @@ angular.module('myApp.controllers', []);
 		//sessionStorage.access_token = access_token;
 		sessionStorage.access_token = data.access_token;
 		sessionStorage.userId = data.user.id;
-		broadcastUserAuthenticated();
-		$scope.user = data.user;
-		instagramApi.getUserInfo(getUserInformationCallback);
+
+		// After completing the Authentication 
+		// flow set by Instagram make sure that
+		// any sort of odd search params are cleared. 
+		window.location.search = "";
+
+	//	broadcastUserAuthenticated();
+	//	$scope.user = data.user;
+	//	instagramApi.getUserInfo(getUserInformationCallback);
 	}
 
 	/**
