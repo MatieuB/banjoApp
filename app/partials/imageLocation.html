@@ -1,0 +1,43 @@
+<!--
+###########################################
+
+
+###########################################
+-->
+<div ng-controller="worldLocationsController">
+
+<div ng-repeat="location in locations" >
+
+{{location}}
+
+<div ng-controller="locationRadiusController" ng-init="init(location)">
+<!--	{{loadedSites}} -->
+	<div ng-repeat="site in loadedSites" >
+
+
+		<!-- ng-init="initSite(siteId)" -->
+		<div ng-controller="locationSiteController"  ng-init="init(site)">
+			
+<!-- {id:id, posts:posts, data:siteData} -->
+			<!--{{posts}} -->
+			<h1>{{site.data.name}}</h1>
+			<pre>{{site.data}} Has this many posts: {{site.posts.length}}</pre>
+
+			<div ng-repeat="post in site.posts">
+				<img ng-src="{{post.images.low_resolution.url}}"></img>
+				
+
+			</div>
+		<!--	{{site.posts}} -->
+
+		</div>
+	</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+

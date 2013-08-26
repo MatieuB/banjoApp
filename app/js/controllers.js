@@ -126,19 +126,9 @@ angular.module('myApp.controllers').controller('userDisplayController',['$scope'
   	//alert("imageDisplayView")
 	//console.log("image display view");
   	// there is some sort of image display view
-
-
-
-
-
-
   }]);
 
-//
-
-angular.module('myApp.controllers').controller('locationController',['$scope', 'instagramApi', function($scope, instagramApi){
-
-	//  	$scope.$on
+angular.module('myApp.controllers').controller('worldLocationsController',['$scope', 'instagramApi', function($scope, instagramApi){
 
   	//alert("imageDisplayView")
 	console.log("locationController");
@@ -162,10 +152,46 @@ angular.module('myApp.controllers').controller('locationController',['$scope', '
 
   }]);
 
+angular.module('myApp.controllers').controller('locationSiteController',['$scope', 'instagramApi', '$timeout', function($scope, instagramApi, $timeout){
+
+	$scope.init = function(site){
+  		 $scope.site = site;
+/*
+  		for(var index in $scope.sites){
+  			var site = $scope.sites[index];
+  			if(site.id == siteId){
+
+  			}
+  		}
+
+  		*/
+  	//	$scope.site = 
+  		// $scope.siteName = 
+  		// site[0].images
+  	}
+
+
+  	$scope.initPosts = function(posts){
+  		$scope.posts = posts;
+/*
+  		for(var index in $scope.sites){
+  			var site = $scope.sites[index];
+  			if(site.id == siteId){
+
+  			}
+  		}
+
+  		*/
+  	//	$scope.site = 
+  		// $scope.siteName = 
+  		// site[0].images
+  	}
+
+ }]);
 /**
  *
  */
-angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'instagramApi', function($scope, instagramApi){
+angular.module('myApp.controllers').controller('locationRadiusController',['$scope', 'instagramApi', '$timeout', function($scope, instagramApi, $timeout){
 
 	//  	$scope.$on
 
@@ -178,17 +204,6 @@ angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'in
   	$scope.loadingSiteIds = new Array();
 
   	function dataLoadedComplete(){
-/*
-  		for(var index in $scope.sites){
-  			var site = $scope.sites[index];
-  			var siteId =  site.id;
-  			// do a search for the site
-
-  			// window.scrollY
-  			// $(window).height()
-
-  		}
-*/
 		$scope.fetchSites();
 		$(window).scroll(function() {
   			var documentHeight = $(document).height();
@@ -197,9 +212,7 @@ angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'in
   				$scope.fetchSites();
   			}
 		});
-
   	}
-
 
   	$scope.fetchSites= function(){
   		if($scope.loadingSiteIds.length == $scope.loadedSites.length){
@@ -207,16 +220,35 @@ angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'in
   				var nextSiteId = $scope.sites[$scope.loadingSiteIds.length].id;
   				fetchSiteById(nextSiteId);
   			}
-  		}else{
-  			// this means that we are still waiting for data to come back
-  			// dont' do anything here
   		}
   	}
 
   	function getSiteSuccessCallback(id){
-  		return function(data){
+  		return function(posts){
   			$scope.dataIsLoading = false;
-			$scope.loadedSites.push(data);
+  			var siteData=undefined;
+  			for(var index in $scope.sites){
+  				var site = $scope.sites[index];
+  				if(site.id == id){
+  					siteData=site;
+  				}
+  			}
+
+  			var addedData = {id:id, posts:posts, data:siteData};
+			$scope.loadedSites.push(addedData);
+
+			function fetchMoreData(){
+				if($scope.loadingSiteIds.length == $scope.loadedSites.length){
+					var docHeight = $(document).height();
+					var windowHeight = $(window).height();
+					// If the window height is the same as the 
+					// document height, then we should load more data
+					if(docHeight < windowHeight + 20){
+						$scope.fetchSites();
+					}	
+				}
+			}
+			$timeout(fetchMoreData, 1000);
   		}
   	}
 
