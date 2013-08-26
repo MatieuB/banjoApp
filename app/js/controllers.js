@@ -70,7 +70,7 @@ angular.module('myApp.controllers', []);
 	 	  	}
 	 	  }
 
-	 	  if(code!=undefined){
+	 	  if(code!==undefined){
 	 	  	instagramAccess.getOAuth(code, userAuthenticatedCallback);
 	 	  }else{
 
@@ -92,8 +92,10 @@ angular.module('myApp.controllers', []);
 
 		instagramApi.getUserInfo(getUserInformationCallback);
 		// broadcastUserAuthenticated();
+		broadcastUserAuthenticated();
 
-		// make a call to see if the user is actually logged in
+
+		/*
 		instagramApi.getUserLoggedIn(function(){
 			// success
 			// make sure that there are no weird query string params
@@ -109,7 +111,7 @@ angular.module('myApp.controllers', []);
 		}
 
 		);
-		
+		*/
 	}
 
   }]);
@@ -140,10 +142,22 @@ angular.module('myApp.controllers').controller('locationController',['$scope', '
 
   	//alert("imageDisplayView")
 	console.log("locationController");
-  	// there is some sort of image display view
-  	function init(location){
-  		$scope.location = location;
+
+	function loadLocationData(){
+  		$scope.locations = new Array();
+		$scope.locations.push( instagramApi.getDefaultLocationObject() );  		
   	}
+
+  	// there is some sort of image display view
+  	if($scope.loggedIn){
+  		loadLocationData();
+  	}else{
+  		$scope.$on('appLoggedIn', function(){
+  			// do stuff here
+  			loadLocationData();
+  		});
+  	}
+
 
 
   }]);
@@ -158,22 +172,28 @@ angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'in
   	//alert("imageDisplayView")
 	console.log("image display view");
   	// there is some sort of image display view
-  	function init(){
 
-  		$scope.locationObject = instagramApi.getDefaultLocationObject();
+  	function dataLoadedComplete(){
+
+
+  	}
+
+  	$scope.init = function(location){
+  		// $scope.locationObject = instagramApi.getDefaultLocationObject();
+
+  		console.log(' controller is inited ');
+  		$scope.locationObject = location;	
   		$scope.locationObject.searchNearby(function(data){
-  			$scope.locations = data;
+  			$scope.sites = data;
+  			dataLoadedComplete();
   		});
   	}
 
-  	if($scope.loggedIn){
-  		init();
-  	}else{
-  		$scope.$on('appLoggedIn', function(){
-  			// do stuff here
-  			init();
-  		});
-  	}
+ 
+
+
+
+
 
 
   }]);

@@ -123,7 +123,7 @@ exports.getMediaByLocationID = function(req, res){
 	*/
 
 
-	
+
 }
 
 exports.locationSearch=function(req, res){
@@ -137,11 +137,14 @@ exports.locationSearch=function(req, res){
 
 	console.log("THIS IS THE QUERY STRING OBJ "+JSON.stringify(query));
 
-	ig.use({access_token:access_token});
 	ig.use({
 	  client_id: '953d8c6c266a4c0b98c5d6f06f3898b2',
-	  client_secret: '74097c62af4249ee89ca825d6629d92f'
+	  client_secret: '74097c62af4249ee89ca825d6629d92f',
+	  access_token:access_token
 	});
+
+	//ig.use({access_token:access_token});
+
 
 
 	var latNum =  parseFloat(lat);
@@ -187,6 +190,8 @@ ig.location_search({lat:latInt,lng:lngInt}, function(err, result, limit) {
 
 });
 */
+
+
 };
 
 

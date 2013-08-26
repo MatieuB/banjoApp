@@ -12,6 +12,12 @@
 
 -->
 
+
+<ng-include src="'partials/userInfo.html'"></ng-include>
+
+
+<ng-include src="'partials/imageLocation.html'"></ng-include>
+
 <div ng-show="loggedIn" >
 <!--  
 
@@ -22,24 +28,6 @@
 
    -->
 
-<div ng-controller="imageDisplayView">
-
-{{userData}}
-Hello: {{userData.full_name}}
-<img ng-src="{{userData.profile_picture}}"/>
-
-
-<!--{{locations}}-->
-
-
-<div ng-repeat="location in locations" ng-controller="locationController">
-
-{{location}}
-
-</div>
-
-
-</div>
 
 </div>
 
