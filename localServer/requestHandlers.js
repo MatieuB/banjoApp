@@ -11,7 +11,31 @@ var redirect_uri = 'http://localhost:8000/app/index.html';
 
 // 518542114.953d8c6.4ec95fcf3a2e429486100cacaa8f8e56
 
+exports.instagramUserInfo= function(req, res){
 
+	var ig = require('instagram-node').instagram();
+
+	var query = url.parse(req.url).query;
+	var access_token = query['access_token'];
+	var user_id = query['user_id'];
+
+	ig.use({ access_token: access_token });
+
+	ig.user(user_id, function(err, result, limit) {
+		if (err) {
+			console.log(err);
+			res.writeHead(500, {"Content-Type": "text/plain"});
+			res.write("There was an error grabbing the user info from the Instagram Server: " + err );
+			res.end();
+		}else{
+			res.write(JSON.stringify(result));
+			res.end();
+		}
+
+
+	});
+
+}
 
 
 /**
@@ -22,6 +46,10 @@ exports.instagramLogin = function(req, res) {
 	  client_id: '953d8c6c266a4c0b98c5d6f06f3898b2',
 	  client_secret: '74097c62af4249ee89ca825d6629d92f'
 	});
+
+	console.log(req.url);
+	//console.log(url.parse(req.url).query);
+
 	var url = api.get_authorization_url(redirect_uri, { scope: ['likes'], state: 'a state' });
 	console.log(url);
 	res.redirect(301, url);
@@ -58,6 +86,30 @@ exports.instagramAuth = function(req, res) {
 
 	});
 };
+
+exports.locationSearch(req, res){
+	var ig = require('instagram-node').instagram();
+	var query = url.parse(req.url).query;
+	var access_token = query['access_token'];
+
+	var lat = query['lat'];
+	var lng = query['lng'];
+	var distance = query['distance'];
+
+	ig.use({ access_token: access_token });
+	ig.location_search({ lat: 48.858844, lng: 2.294351 },  function(err, result, limit) {
+		if (err) {
+			console.log(err);
+			res.writeHead(500, {"Content-Type": "text/plain"});
+			res.write("There was an error Authenticating to the Instagram Server: " + err );
+			res.end();
+		}else{
+			res.write(JSON.stringify(result));
+			res.end();
+		}
+	}
+
+}
 
 
 function instagramCall(req, res){
@@ -105,8 +157,8 @@ err.body;
 }
 
 
-var temp = JSON.stringify(result);
-if(temp !== false){
+	var temp = JSON.stringify(result);
+	if(temp !== false){
 	res.write(temp);
     res.end();
 }else{
@@ -118,44 +170,6 @@ if(temp !== false){
 
 	});
 
-
-
-/*
-	var pathname = url.parse(req.url).pathname;
-	pathname = pathname.replace('/instagram','');
-	var options = {
-		host: "https://api.instagram.com/v1/",
-		path: pathname,
-		method: req.method,
-		port: 443
-	};
-
-	var callback = function(instagramResponse){
-		res.writeHead(200, {"Content-Type": "text/plain"});
-		instagramResponse.on('data', function(chunk){
-			res.write(chunk);
-		});
-		instagramResponse.on('end', function(){
-			res.end();
-		});
-	};
-
-	var instagramRequest = http.request(options, callback).on('error', function(e){
-		 console.log("Got error: " + e.message);
-	});
-
-	if(req.method == 'POST' || req.method == 'PUT'){
-		req.addListener('data', function(chunk){
-			instagramRequest.write(chunk);
-		});
-		req.addListener('end', function(){
-			instagramRequest.end();
-		});
-	}else{
-		instagramRequest.end();
-	}
-
-	*/
 }
 
 

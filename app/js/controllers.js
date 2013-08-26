@@ -7,30 +7,49 @@ angular.module('myApp.controllers', []);
 /**
  * The rootApplicationController ensures that the user is properly logged into the Instagram service
  */
- angular.module('myApp.controllers').controller('rootApplicationController',['$scope', '$location', 'instagramAccess', function($scope, $location, instagramAccess){
- 	// ($location.absUrl()).replace("http://localhost:8000/app/index.html" , "");
- 	// use Local session storage to store 
- 	// the auth token
+ angular.module('myApp.controllers').controller('rootApplicationController',['$scope', '$location', 'instagramAccess', '$rootScope', 'instagramApi', function($scope, $location, instagramAccess, $rootScope, instagramApi){
+
  	if(typeof(Storage)=="undefined")
   	{
-  		// Yes! localStorage and sessionStorage support!
-  		// Some code.....
   		alert(" this App is incompatible with your current browser type/version ");
   	}
 
- 	$scope.loggedIn= false;
- 	var callback = function(data){
-		console.log("auth callback just finished ");
+ 	$rootScope.loggedIn= false;
+
+ 	function broadcastUserAuthenticated(){
+ 		$rootScope.loggedIn = true;
+ 		$rootScope.$broadcast('appLoggedIn');
+ 	}
+
+ 	var getUserInformationCallback = function(data){
+ 		// alert(JSON.stringify(data));
+		$scope.userData = data;
+		$rootScope.$broadcast('userDataFetched');
+ 	}
+
+ 	var userAuthenticatedCallback = function(data){
+		console.log("Finished Grabbing the User Data");
 		var access_token = data.access_token;
 		// set the user =)
-		//	sessionStorage.access_token = access_token;
-		$scope.loggedIn= true;
-		$scope.user = data;
+		//sessionStorage.access_token = access_token;
+		sessionStorage.access_token = data.access_token;
+		sessionStorage.userId = data.user.id;
+		broadcastUserAuthenticated();
+		$scope.user = data.user;
+		instagramApi.getUserInfo(getUserInformationCallback);
+	}
+
+	/**
+	 * Store information on the rootScope object
+	 */
+	$rootScope.getUser = function(){
+
 	}
 
 
-	if(sessionStorage.access_token == undefined){
-		 var queryParams = window.location.search;
+
+	function loginToInstagram(){
+		var queryParams = window.location.search;
 	 	 /**
 	 	  * Do some custom query string calculations
 	 	  * It seems that Angular is having trouble with this for some sort of reason
@@ -48,42 +67,72 @@ angular.module('myApp.controllers', []);
 	 	  		}
 	 	  	}
 	 	  }
+
 	 	  if(code!=undefined){
-	 	  	instagramAccess.getOAuth(code, callback);
+	 	  	instagramAccess.getOAuth(code, userAuthenticatedCallback);
 	 	  }else{
 	 	  	// This case shouldn't happen
 	 	  	// do some stuff here --> send user to the 'login' page
 	 	  	// because we can't go through the auth process without a "code" from instagram
+	 	  	var search = $location.search(); 
+	 	  	var redirectUrl = "/instagramLogin" + "?" + $.param(search) + $location.hash();
+	 	  	window.location = redirectUrl;
 	 	  }
-		
-	}else{
-		//alert("using session stored auth token");
-
-		if($scope.user == undefined){
-			// grab the use information
-			// =)
-
-		//	alert(' there is no defined user ');
-
-
-		}
 	}
+
+	if(sessionStorage.access_token == undefined || sessionStorage.userId == undefined){
+		loginToInstagram();
+	}else{
+		instagramApi.getUserInfo(getUserInformationCallback);
+		broadcastUserAuthenticated();
+	}
+
+  }]);
+
+/**
+ *
+ */
+angular.module('myApp.controllers').controller('userDisplayController',['$scope',function($scope){
+
+	//  	$scope.$on
+
+  	//alert("imageDisplayView")
+	//console.log("image display view");
+  	// there is some sort of image display view
+
+
 
 
 
 
   }]);
 
-
 /**
  *
  */
-angular.module('myApp.controllers').controller('imageDisplayView',['$scope',function($scope){
+angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'instagramApi', function($scope, instagramApi){
 
 	//  	$scope.$on
 
   	//alert("imageDisplayView")
 	console.log("image display view");
   	// there is some sort of image display view
+  	function init(){
+
+  		$scope.locationObject = instagramApi.getDefaultLocationObject();
+  		$scope.locationObject.searchNearby(function(data){
+  			$scope.locations = data;
+  		});
+  	}
+
+  	if($scope.loggedIn){
+  		init();
+  	}else{
+  		$scope.$on('appLoggedIn', function(){
+  			// do stuff here
+  			init();
+  		});
+  	}
+
 
   }]);

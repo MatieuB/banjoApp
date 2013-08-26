@@ -9,14 +9,26 @@
 
 
 <!--
-  <ul class="menu">
-    <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
-  </ul>
+
 -->
 
 <div ng-show="loggedIn" >
+<!--  
+
+ <ul class="menu">
+    <li><a href="#/view1">view1</a></li>
+    <li><a href="#/view2">view2</a></li>
+  </ul>
+
+   -->
+
 <div ng-controller="imageDisplayView">
+
+{{userData}}
+Hello: {{userData.full_name}}
+<img ng-src="{{userData.profile_picture}}"/>
+
+
 
 </div>
 
@@ -25,7 +37,7 @@
  <!-- <div ng-view></div> -->
 
 
-{{user}}
+<!-- {{user}} -->
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
