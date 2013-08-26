@@ -128,7 +128,7 @@ exports.getMediaByLocationID = function(req, res){
 
 	var id = query['id'];
 
-
+	console.log("THIS IS THE QUERY STRING OBJ "+JSON.stringify(query));
 	// console.log("THIS IS THE QUERY STRING OBJ "+JSON.stringify(query));
 
 	ig.use({
@@ -137,7 +137,27 @@ exports.getMediaByLocationID = function(req, res){
 	  access_token:access_token
 	});
 
+	ig.location_media_recent(	id, function(err, result, pagination, limit) {
+		if (err) {
+			//console.log(result);
+			console.log(err);
 
+			if( err.status_code == 500 ){
+				err.retry();	
+			}else{
+				res.writeHead(500, {"Content-Type": "text/plain"});
+				res.write("There was an error accessing the Instagram Server: " + err );
+				res.end();
+			}
+
+		}else{
+			res.write(JSON.stringify(result));
+			res.end();
+		}
+
+
+	});
+	
 
 
 
@@ -169,7 +189,6 @@ exports.locationSearch=function(req, res){
 
 	ig.location_search({ lat: latNum, lng: lngNum },  function(err, result, limit) {
 		if (err) {
-
 			console.log(result);
 			console.log(err);
 			res.writeHead(500, {"Content-Type": "text/plain"});

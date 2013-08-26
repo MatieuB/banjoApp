@@ -189,15 +189,11 @@ angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'in
 
   		}
 */
-
+		$scope.fetchSites();
 		$(window).scroll(function() {
-  //$('#log').append('<div>Handler for .scroll() called.</div>');
-
   			var documentHeight = $(document).height();
   			var windowPosition = $(window).height() + window.scrollY;
-
   			if(windowPosition > (documentHeight - 20)){
-  				// console.log(' scrolled within 20 px of the bottom ');
   				$scope.fetchSites();
   			}
 		});
@@ -209,7 +205,6 @@ angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'in
   		if($scope.loadingSiteIds.length == $scope.loadedSites.length){
   			if($scope.sites.length > $scope.loadingSiteIds.length){
   				var nextSiteId = $scope.sites[$scope.loadingSiteIds.length].id;
-  				$scope.loadingSiteIds.push(nextSiteId);
   				fetchSiteById(nextSiteId);
   			}
   		}else{
@@ -220,13 +215,14 @@ angular.module('myApp.controllers').controller('imageDisplayView',['$scope', 'in
 
   	function getSiteSuccessCallback(id){
   		return function(data){
-  			// id
+  			$scope.dataIsLoading = false;
 			$scope.loadedSites.push(data);
-			$scope.$apply();
   		}
   	}
 
   	function fetchSiteById(id){
+  		$scope.dataIsLoading = true;
+  		$scope.loadingSiteIds.push(id);
   		var successCallback = getSiteSuccessCallback(id);
   		instagramApi.getMediaBySite(id, successCallback);
   	}

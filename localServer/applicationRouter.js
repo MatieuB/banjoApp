@@ -8,6 +8,7 @@ exactMatches["/instagramUserInfo"] = requestHandlers.instagramUserInfo;
 exactMatches["/locationSearch"] = requestHandlers.locationSearch;
 
 exactMatches["/instagramUserLoggedIn"] = requestHandlers.instagramUserLoggedIn;
+exactMatches["/getMediaByLocationID"] = requestHandlers.getMediaByLocationID;
 
 
 var subpaths = {};

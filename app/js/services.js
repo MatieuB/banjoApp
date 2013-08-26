@@ -96,8 +96,8 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 
 
 	factory.getMediaBySite=function(siteId, successCallback, failureCallback){
-		/*
-		$http.get('/getMediaByLocationID?access_token=' + sessionStorage.access_token + "&id=" + siteId);
+		
+		$http.get('/getMediaByLocationID?access_token=' + sessionStorage.access_token + "&id=" + siteId)
 			.success(function(data){
 				successCallback(data);
 			}).error(function(data, status, headers, config){
@@ -105,9 +105,9 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 				alert("there was an error");
 				failureCallback();
 			});
-		*/
+		
 
-		successCallback(" Adding pretend data \n\n\n\n\n\n\n\n\n\n   end of pretend data");
+	//	successCallback(" Adding pretend data \n\n\n\n\n\n\n\n\n\n   end of pretend data");
 
 	}
 
