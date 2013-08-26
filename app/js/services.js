@@ -58,12 +58,13 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 	// Location.prototype.lng = 2.294351;
 	// Location.prototype.distance = 1000;
 
-	Location.prototype.searchNearby = function(successCallback){
+	Location.prototype.searchNearby = function(successCallback, failureCallback){
 		var queryString = this.getQueryString();
 		$http.get('/locationSearch' + queryString).success(function(data){
 			successCallback(data);
 		}).error(function(data, status, headers, config){
 			console.log(JSON.stringify(data));
+			failureCallback();
 		});
 	}
 

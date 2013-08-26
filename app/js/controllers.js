@@ -156,6 +156,7 @@ angular.module('myApp.controllers').controller('locationSiteController',['$scope
 
 	$scope.init = function(site){
   		 $scope.site = site;
+  		 $scope.siteCompletelyLoaded=true;
   	}
 
  }]);
@@ -164,11 +165,7 @@ angular.module('myApp.controllers').controller('locationSiteController',['$scope
  */
 angular.module('myApp.controllers').controller('locationRadiusController',['$scope', 'instagramApi', '$timeout', function($scope, instagramApi, $timeout){
 
-	//  	$scope.$on
 
-  	//alert("imageDisplayView")
-	//console.log("image display view");
-  	// there is some sort of image display view
   	$scope.allSitePosts = new Array();
 
   	$scope.loadedSites = new Array();
@@ -179,7 +176,7 @@ angular.module('myApp.controllers').controller('locationRadiusController',['$sco
   		return function() {
   			var documentHeight = $(document).height();
   			var windowPosition = $(window).height() + window.scrollY;
-  			if(windowPosition > (documentHeight - 20)){
+  			if(windowPosition > (documentHeight - 10)){
   				scope.fetchSites();
   				scope.$apply();
   			}
@@ -224,13 +221,13 @@ angular.module('myApp.controllers').controller('locationRadiusController',['$sco
 					var windowHeight = $(window).height();
 					// If the window height is the same as the 
 					// document height, then we should load more data
-					if(docHeight < windowHeight + 20){
+					if(docHeight < windowHeight + 10){
 						$scope.fetchSites();
 						$scope.$apply();
 					}	
 				}
 			}
-			$timeout(fetchMoreData, 1000);
+			$timeout(fetchMoreData, 0);
   		}
   	}
 
@@ -242,16 +239,27 @@ angular.module('myApp.controllers').controller('locationRadiusController',['$sco
   		//console.log("fetching more posting data");
   	}
 	
+	function loadLocationSucess(data){
+		$scope.sites = data;
+  		dataLoadedComplete();
+	}
+
+	function loadLocationFailure(){
+		// try 3 times
+		$scope.searchAttempts ++;
+		if($scope.searchAttempts  >= 3){
+			alert("Unable to reach the Instagram servers. Please try again. ");
+		}else{
+			$scope.locationObject.searchNearby(loadLocationSucess, loadLocationFailure);
+		}
+	}
 
   	$scope.init = function(location){
   		// $scope.locationObject = instagramApi.getDefaultLocationObject();
-
+  		$scope.searchAttempts = 0;
   		console.log(' controller is inited ');
   		$scope.locationObject = location;	
-  		$scope.locationObject.searchNearby(function(data){
-  			$scope.sites = data;
-  			dataLoadedComplete();
-  		});
+  		$scope.locationObject.searchNearby(loadLocationSucess, loadLocationFailure);
   	}
 
 

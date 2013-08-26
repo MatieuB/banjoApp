@@ -4,86 +4,54 @@
 
 ###########################################
 -->
-<div ng-controller="worldLocationsController">
+<div ng-controller="worldLocationsController" >
 
 <div ng-repeat="location in locations" >
 
-{{location}}
 
 <div ng-controller="locationRadiusController" ng-init="init(location)">
-<!--	{{loadedSites}} -->
 
-<div ng-init="view='together'">
+
+<div ng-init="view='seperate'">
 	<div ng-switch on="view">
 
-<div ng-switch-when="seperate">
 
+		<div ng-switch-when="seperate">
+			<div ng-repeat="site in loadedSites" >
+				<div ng-show="site.posts.length>0" ng-controller="locationSiteController"  ng-init="init(site)">
+					<h1>{{site.data.name}}</h1>
+					<div ng-repeat="post in site.posts" style="display:inline-block;" class="image">
+						{{post.data}}
+						<img ng-src="{{post.images.low_resolution.url}}" alt=""></img>
+						<span class="caption">
+							{{site.data.name}}<br>
+							Lat: {{site.data.latitude}}<br>
+							Long: {{site.data.longitude}}
+						</span>
+					</div>
+					<div ng-hide="loadingSiteIds.length==loadedSites.length" style="width:100%;" ng-animate="'animate'">
+						<h1> Loading ... </h1>	
+					</div>
 
-	<div ng-repeat="site in loadedSites" >
-
-
-		<!-- ng-init="initSite(siteId)" -->
-		<div ng-controller="locationSiteController"  ng-init="init(site)">
-			
-<!-- {id:id, posts:posts, data:siteData} -->
-			<!--{{posts}} -->
-
-
-
-			<h1>{{site.data.name}}</h1>
-			<pre>{{site.data}} Has this many posts: {{site.posts.length}}</pre>
-
-
-
-		
-		
-			<div ng-repeat="post in site.posts" style="display:inline-block; margin-left:auto; margin-right:auto;" class="image">
-				{{post.data}}
-				<img ng-src="{{post.images.low_resolution.url}}" alt=""></img>
-
-				<span class="caption">
-					{{site.data.name}}<br>
-					Lat: {{site.data.latitude}}<br>
-					Long: {{site.data.longitude}}
-				</span>
-
-
+				</div>
 			</div>
-	
-		<!--	{{site.posts}} -->
+		 </div>
 
-		</div>
-	</div>
-
-
-
- </div>
-
-<div ng-switch-when="together">
-
-		<!--  " -->
+		<div ng-switch-when="together">
 			<div ng-repeat="posting in allSitePosts" ng-animate="'animate'" style="display:inline-block; margin-left:auto; margin-right:auto;" class="image">
-				
 				<img ng-src="{{posting.images.low_resolution.url}}" alt=""></img> 
-			<!-- <img ng-src="{{posting.images.standard_resolution.url}}" alt=""></img> -->
-				
+				<!-- <img ng-src="{{posting.images.standard_resolution.url}}" alt=""></img> -->
 				<span class="caption">
 					{{posting.location.name}}<br>
 					Lat: {{posting.location.latitude}}<br>
 					Long: {{posting.location.longitude}}
 				</span>
-
-
 			</div>
-
-</div>
+		</div>
 
 
 	</div>
 </div>
-
-
-
 
 
 
