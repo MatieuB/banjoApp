@@ -5,6 +5,8 @@ var exactMatches = {};
 exactMatches["/instagramAuth"] = requestHandlers.instagramAuth;
 exactMatches["/instagramLogin"] = requestHandlers.instagramLogin;
 exactMatches["/instagramUserInfo"] = requestHandlers.instagramUserInfo;
+exactMatches["/locationSearch"] = requestHandlers.locationSearch;
+
 
 var subpaths = {};
 subpaths["/instagram"] = requestHandlers.instagramCall;

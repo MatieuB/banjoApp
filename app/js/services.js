@@ -8,13 +8,10 @@
 angular.module('myApp.services', []).
   value('version', '0.1');
 
-
-
 angular.module('myApp.services').factory('instagramAccess', ['$http',function($http){
 	var factory= {};
 	factory.loggedIn = false;
-	factory.user = {};
-	
+	factory.user = {};	
 	factory.getOAuth=function(code, successCallback){
 		if(!factory.loggedIn){
 			$http.get('/instagramAuth?code='+code).success(function(data){
@@ -30,11 +27,7 @@ angular.module('myApp.services').factory('instagramAccess', ['$http',function($h
 	return factory;
 }
 
-
 ]);
-
-
-
 
 angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAccess',function($http, instagramAccess){
 	var factory= {};
@@ -44,7 +37,6 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 		this.lng=lng;
 		this.distance=distance;
 	};
-
 
 	Location.prototype.getQueryString = function(){
 		var queryString = "?access_token="+sessionStorage.access_token;
@@ -67,7 +59,7 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 
 	Location.prototype.searchNearby = function(successCallback){
 		var queryString = this.getQueryString();
-		$http.get('/instagram' + queryString).success(function(data){
+		$http.get('/locationSearch' + queryString).success(function(data){
 			successCallback(data);
 		});
 	}
@@ -79,11 +71,12 @@ angular.module('myApp.services').factory('instagramApi', ['$http', 'instagramAcc
 	}
 
 	factory.getUserInfo=function(successCallback){
-		$http.get('/instagramUserInfo?access_token=' + sessionStorage.access_token + '&user_id=' + sessionStorage.userId ).success(function(data){
-			successCallback(data);
-		}).error(function(){
-			alert("there was an error");
-		});
+		$http.get('/instagramUserInfo?access_token=' + sessionStorage.access_token + '&user_id=' + sessionStorage.userId )
+			.success(function(data){
+				successCallback(data);
+			}).error(function(){
+				alert("there was an error");
+			});
 	}
 
 	return factory;

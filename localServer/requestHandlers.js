@@ -87,7 +87,7 @@ exports.instagramAuth = function(req, res) {
 	});
 };
 
-exports.locationSearch(req, res){
+exports.locationSearch=function(req, res){
 	var ig = require('instagram-node').instagram();
 	var query = url.parse(req.url).query;
 	var access_token = query['access_token'];
@@ -96,9 +96,15 @@ exports.locationSearch(req, res){
 	var lng = query['lng'];
 	var distance = query['distance'];
 
+	console.log("THIS IS THE QUERY STRING OBJ "+JSON.stringify(query));
+
 	ig.use({ access_token: access_token });
-	ig.location_search({ lat: 48.858844, lng: 2.294351 },  function(err, result, limit) {
+/*
+	ig.location_search({ lat: lat, lng: lng },  function(err, result, limit) {
 		if (err) {
+
+			console.log(result);
+
 			console.log(err);
 			res.writeHead(500, {"Content-Type": "text/plain"});
 			res.write("There was an error Authenticating to the Instagram Server: " + err );
@@ -107,9 +113,34 @@ exports.locationSearch(req, res){
 			res.write(JSON.stringify(result));
 			res.end();
 		}
-	}
+	});
+*/
 
-}
+ // 48.858844, 2.294351
+
+var latInt =  parseFloat(lat);
+var lngInt = parseFloat(lng);
+console.log(latInt);
+console.log(lngInt);
+
+ig.location_search({ lat: latInt, lng: lngInt }, function(err, result, limit) {
+
+		if (err) {
+
+			console.log(result);
+
+			console.log(err);
+			res.writeHead(500, {"Content-Type": "text/plain"});
+			res.write("There was an error Authenticating to the Instagram Server: " + err );
+			res.end();
+		}else{
+			res.write(JSON.stringify(result));
+			res.end();
+		}
+
+});
+
+};
 
 
 function instagramCall(req, res){
